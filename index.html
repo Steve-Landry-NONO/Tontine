@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Wireframes — Gestion d'association et de tontines</title>
+<style>
+:root{
+  --encre:#16181D;
+  --papier:#FFFFFF;
+  --table:#D9D7D0;
+  --trait:#D3D0C8;
+  --trait-fort:#A9A59B;
+  --gris:#7E838A;
+  --surlignage:#F1EEE6;
+  --valide:#1C6B50;
+  --attention:#9E6A16;
+  --alerte:#A2372B;
+  --ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --note:Charter,"Bitstream Charter","Iowan Old Style","Sitka Text",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--table);color:var(--encre);font-family:var(--note);line-height:1.55;padding:28px 16px 80px}
+.doc{max-width:1080px;margin:0 auto}
+
+.titre-doc{font-size:1.9rem;line-height:1.2;letter-spacing:-.01em;max-width:24ch}
+.sous-titre{margin-top:10px;color:#4A4E55;max-width:62ch}
+.encadre{margin:26px 0 0;padding:16px 18px;background:var(--papier);border:1px solid var(--trait)}
+.encadre h2{font-size:1rem;margin-bottom:8px}
+.encadre ul{margin-left:18px}
+.encadre li{margin:4px 0;font-size:.92rem}
+.encadre p{font-size:.93rem;margin:8px 0}
+.sommaire a{color:var(--encre);text-decoration:none;border-bottom:1px solid var(--trait-fort)}
+
+.chapitre{margin:56px 0 22px;padding-bottom:8px;border-bottom:2px solid var(--encre);font-size:1.3rem}
+.chapitre span{display:block;font-size:.85rem;font-weight:400;color:#4A4E55;margin-top:4px}
+
+.planche{display:flex;flex-wrap:wrap;gap:26px;align-items:flex-start;margin:34px 0 0;padding-top:26px;border-top:1px solid var(--trait-fort)}
+.planche.debut{border-top:none;padding-top:0}
+.marge{flex:1 1 300px;min-width:260px;padding-top:4px}
+.ref{display:inline-block;font-family:var(--ui);font-size:.7rem;border:1px solid var(--trait-fort);padding:2px 7px;color:#4A4E55}
+.ref.neuf{border-color:var(--valide);color:var(--valide)}
+.marge h3{font-size:1.12rem;margin:9px 0 8px;line-height:1.3}
+.marge p{font-size:.93rem;margin:9px 0;color:#33373D}
+.marge ul{margin:9px 0 9px 17px;font-size:.9rem}
+.marge li{margin:5px 0}
+
+/* ---------- bloc question ---------- */
+.question{
+  margin:38px 0 0;padding:20px 20px 22px;
+  background:var(--papier);border:1px solid var(--trait-fort);
+  border-top:4px solid var(--attention);
+}
+.question .num{font-family:var(--ui);font-size:.72rem;color:var(--attention);font-weight:700}
+.question h3{font-size:1.2rem;margin:6px 0 8px;line-height:1.3}
+.question > p{font-size:.95rem;color:#33373D;margin:8px 0;max-width:70ch}
+.comparatif{display:flex;flex-wrap:wrap;gap:22px;margin-top:18px}
+.variante{flex:1 1 250px;min-width:230px}
+.cap{font-family:var(--ui);font-size:.74rem;font-weight:600;padding:6px 9px;background:var(--surlignage);border-left:3px solid var(--trait-fort);margin-bottom:11px}
+.variante .consequence{font-size:.88rem;margin-top:11px;color:#33373D}
+.reponse{margin-top:18px;padding:11px 13px;border:1px dashed var(--trait-fort);font-size:.9rem}
+.reponse b{font-family:var(--ui);font-size:.74rem;display:block;margin-bottom:3px;color:var(--gris)}
+
+/* ---------- l'écran ---------- */
+.ecran{flex:0 0 auto;width:320px;background:var(--papier);border:1px solid var(--trait-fort);border-radius:22px;overflow:hidden;font-family:var(--ui);box-shadow:0 1px 0 rgba(0,0,0,.10)}
+.ecran.mini{width:100%;border-radius:16px}
+.statut{display:flex;justify-content:space-between;padding:7px 16px 3px;font-size:.66rem;color:var(--gris)}
+.entete{padding:8px 16px 12px;border-bottom:1px solid var(--trait)}
+.mini .entete,.mini .corps,.mini .statut,.mini .compteur{padding-left:12px;padding-right:12px}
+.contexte{display:flex;align-items:center;justify-content:space-between;font-size:.8rem;font-weight:600}
+.contexte em{font-style:normal;color:var(--gris);font-weight:400;font-size:.72rem}
+.titre-ecran{font-size:1.05rem;font-weight:600;margin-top:7px}
+.mini .titre-ecran{font-size:.92rem}
+.retour{font-size:.75rem;color:var(--gris);margin-bottom:4px}
+.corps{padding:13px 16px 16px}
+
+.bloc{border:1px solid var(--trait);padding:11px 12px;margin-bottom:9px}
+.bloc.plein{background:var(--surlignage)}
+.bloc-titre{font-size:.72rem;color:var(--gris);margin-bottom:4px}
+.bloc-chiffre{font-size:1.35rem;font-weight:600;letter-spacing:-.01em}
+.mini .bloc-chiffre{font-size:1.1rem}
+.bloc-detail{font-size:.72rem;color:var(--gris);margin-top:3px}
+
+.ligne{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--trait);font-size:.82rem}
+.ligne:last-child{border-bottom:none}
+.ligne .nom{flex:1;min-width:0}
+.ligne .nom small{display:block;color:var(--gris);font-size:.7rem}
+.ligne .val{font-variant-numeric:tabular-nums;text-align:right;font-size:.8rem}
+.jeton{width:26px;height:26px;border-radius:50%;flex:0 0 auto;background:var(--trait)}
+.puce{font-size:.64rem;padding:2px 7px;border:1px solid var(--trait-fort);color:#4A4E55;white-space:nowrap}
+.puce.ok{border-color:var(--valide);color:var(--valide)}
+.puce.att{border-color:var(--attention);color:var(--attention)}
+.puce.ko{border-color:var(--alerte);color:var(--alerte)}
+
+.btn{display:block;width:100%;text-align:center;padding:11px;font-size:.85rem;font-weight:600;border:1px solid var(--encre);background:var(--papier);margin-top:11px}
+.mini .btn{padding:9px;font-size:.78rem}
+.btn.fort{background:var(--valide);border-color:var(--valide);color:#fff}
+.btn.discret{border-color:var(--trait-fort);color:#4A4E55;font-weight:400}
+.duo{display:flex;gap:9px}
+.duo .btn{margin-top:11px}
+
+.champ{border:1px solid var(--trait-fort);padding:10px 11px;font-size:.85rem;color:var(--gris);margin-top:7px}
+.champ b{color:var(--encre);font-weight:600}
+
+.bandeau{padding:9px 12px;font-size:.75rem;line-height:1.4;border-left:3px solid var(--gris);background:var(--surlignage);margin-bottom:11px}
+.bandeau.att{border-left-color:var(--attention)}
+.bandeau.ko{border-left-color:var(--alerte)}
+.bandeau.ok{border-left-color:var(--valide)}
+.bandeau b{display:block;font-size:.78rem;margin-bottom:2px}
+
+.compteur{display:flex;justify-content:space-between;align-items:baseline;background:var(--encre);color:#fff;padding:9px 16px}
+.compteur .lib{font-size:.7rem;opacity:.75}
+.compteur .som{font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+
+table.mini-t{width:100%;border-collapse:collapse;font-size:.74rem;margin-top:4px}
+table.mini-t th{text-align:left;font-weight:600;color:var(--gris);font-size:.68rem;padding:5px 4px;border-bottom:1px solid var(--trait-fort)}
+table.mini-t td{padding:6px 4px;border-bottom:1px solid var(--trait);font-variant-numeric:tabular-nums}
+table.mini-t tr.hors td{color:var(--gris)}
+table.mini-t td:last-child,table.mini-t th:last-child{text-align:right}
+
+.nav{display:flex;border-top:1px solid var(--trait);font-size:.63rem;color:var(--gris);text-align:center}
+.nav div{flex:1;padding:9px 2px}
+.nav div.actif{color:var(--encre);font-weight:600;box-shadow:inset 0 2px 0 var(--encre)}
+
+.recu{border:1px dashed var(--trait-fort);padding:11px 12px;font-size:.75rem;margin-top:10px}
+.recu .l{display:flex;justify-content:space-between;padding:2px 0;gap:10px}
+.recu .l.tot{border-top:1px solid var(--trait);margin-top:5px;padding-top:5px;font-weight:600}
+.recu .l span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.schema{background:var(--papier);border:1px solid var(--trait-fort);padding:18px 16px;margin-top:20px;font-family:var(--ui);font-size:.8rem}
+.schema pre{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.72rem;line-height:1.7;overflow-x:auto;white-space:pre}
+
+@media (max-width:720px){
+  body{padding:20px 12px 60px}
+  .ecran{width:100%;max-width:340px;margin:0 auto}
+  .planche{gap:18px}
+  .titre-doc{font-size:1.45rem}
+  .question{padding:16px 14px 18px}
+}
+</style>
+</head>
+<body>
+<div class="doc">
+
+<h1 class="titre-doc">Association et tontines — écrans de travail</h1>
+<p class="sous-titre">Deuxième version, revue après vos notes du dernier échange. Volontairement en noir et blanc : à ce stade on discute de ce que l'écran doit contenir et de qui fait quoi, pas de l'apparence finale.</p>
+
+<div class="encadre">
+  <h2>Comment lire ce document</h2>
+  <ul>
+    <li>Les écrans sont ceux d'un téléphone. Les noms et les montants sont fictifs.</li>
+    <li>À droite de chaque écran, ce qu'il résout et pourquoi il est fait ainsi.</li>
+    <li><b>Les six blocs encadrés en jaune sont des questions pour vous.</b> Chaque fois, nous avons dessiné les deux options : vous choisissez en regardant, pas en imaginant.</li>
+    <li>Les écrans marqués « bureau » ne sont pas visibles par un adhérent simple.</li>
+  </ul>
+</div>
+
+<div class="encadre sommaire">
+  <h2>Ce que contient ce document</h2>
+  <p><a href="#modele">Le modèle</a> · <a href="#entree">L'entrée et le fond</a> · <a href="#tontines">Les tontines</a> · <a href="#credit">Le crédit</a> · <a href="#reconst">La reconstitution</a> · <a href="#bilan">La caisse et le bilan</a> · <a href="#recap">Les six questions</a></p>
+</div>
+
+<!-- ═══════════════ MODÈLE ═══════════════ -->
+<h2 class="chapitre" id="modele">Le modèle, corrigé après vos notes<span>Ce que nous avions mal compris la première fois</span></h2>
+
+<div class="encadre">
+  <p>Nous avions modélisé une tontine comme l'objet principal. Vos notes montrent autre chose : <b>l'objet principal est l'association, qui détient un fond</b>. Les tontines sont des activités menées à l'intérieur de cette association, et il peut y en avoir plusieurs en parallèle. Le crédit, l'emprunt bancaire et la reconstitution sont trois autres activités qui touchent au même fond.</p>
+  <p>Cette correction change l'architecture. Elle est faite dans tous les écrans qui suivent.</p>
+</div>
+
+<div class="schema">
+<pre>ADHÉRENT
+   │  entre en payant son fond
+   ▼
+ASSOCIATION ─── fond ─── situation de caisse (entrée / sortie / solde)
+   │
+   ├── Tontine 1        cotisations, tour, bénéficiaire
+   ├── Tontine 2
+   ├── Tontine 3
+   │
+   ├── Crédit aux membres      date de prêt · taux · date de remboursement · état
+   ├── Emprunt à la banque     date de prêt · date de remboursement · état
+   └── Reconstitution          événement · délai · état
+
+           ▼
+   BILAN mensuel et annuel
+   niveau du fond · total des intérêts · reconstitutions non réalisées · pertes</pre>
+</div>
+
+<!-- ═══════════════ ENTRÉE ═══════════════ -->
+<h2 class="chapitre" id="entree">1. L'entrée et le fond<span>« Paie son fond » — enregistrement de l'adhérent, puis paiement</span></h2>
+
+<div class="planche debut">
+  <div class="ecran">
+    <div class="statut"><span>09:12</span><span>4G</span></div>
+    <div class="entete"><div class="titre-ecran">Mes associations</div></div>
+    <div class="corps">
+      <div class="bloc plein">
+        <div class="bloc-titre">Association des Amis de Nzeng-Ayong</div>
+        <div class="ligne" style="border:none;padding:6px 0 0">
+          <div class="nom">3 tontines en cours<small>Vous êtes trésorier</small></div>
+          <span class="puce ko">Action</span>
+        </div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-titre">Mutuelle familiale Kamdem</div>
+        <div class="ligne" style="border:none;padding:6px 0 0">
+          <div class="nom">1 tontine<small>Adhérent · à jour</small></div>
+          <span class="puce ok">OK</span>
+        </div>
+      </div>
+      <a class="btn discret">Rejoindre une association</a>
+      <a class="btn discret">Créer une association</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref neuf">Corrigé — architecture</span>
+    <h3>Une personne, plusieurs associations</h3>
+    <p>Le premier écran de l'application liste les associations, pas les tontines. Les tontines se trouvent à l'intérieur.</p>
+    <p>Le rôle est attaché à chaque adhésion, pas à la personne : on peut être trésorier ici et adhérent simple ailleurs. C'est ce qui permet à un seul compte de servir partout.</p>
+  </div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>09:14</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Amis de Nzeng-Ayong</span><em>changer</em></div>
+      <div class="titre-ecran">Accueil</div>
+    </div>
+    <div class="compteur"><span class="lib">Solde de la caisse</span><span class="som">18 450 000</span></div>
+    <div class="corps">
+      <div class="bloc">
+        <div class="bloc-titre">Niveau du fond</div>
+        <div class="bloc-chiffre">60 000 000</div>
+        <div class="bloc-detail">12 adhérents · 3 reconstitutions en cours</div>
+      </div>
+      <div class="bloc plein">
+        <div class="bloc-titre">Activités en cours</div>
+        <div class="ligne" style="padding:7px 0"><div class="nom">Tontine 1<small>Séance samedi · 8 sur 12 servis</small></div><span class="puce att">À payer</span></div>
+        <div class="ligne" style="padding:7px 0"><div class="nom">Tontine 2<small>Séance le 20 · 3 sur 9 servis</small></div><span class="puce ok">À jour</span></div>
+        <div class="ligne" style="padding:7px 0;border:none"><div class="nom">Tontine 3<small>Démarre en novembre</small></div><span class="puce">Ouverte</span></div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-titre">Engagements</div>
+        <div class="ligne" style="padding:7px 0"><div class="nom">Crédits aux membres<small>4 en cours</small></div><span class="val">7 200 000</span></div>
+        <div class="ligne" style="padding:7px 0"><div class="nom">Emprunt bancaire<small>BGFI · échéance mars</small></div><span class="val">− 5 000 000</span></div>
+        <div class="ligne" style="padding:7px 0;border:none"><div class="nom">Reconstitutions non réalisées<small>3 dossiers</small></div><span class="val">2 400 000</span></div>
+      </div>
+    </div>
+    <div class="nav"><div class="actif">Accueil</div><div>Tontines</div><div>Crédit</div><div>Membres</div><div>Mon compte</div></div>
+  </div>
+  <div class="marge">
+    <span class="ref neuf">Nouveau — accueil de l'association</span>
+    <h3>Le fond en haut, les activités en dessous</h3>
+    <p>Deux chiffres différents, souvent confondus, que l'écran sépare volontairement : <b>le solde de caisse</b>, c'est-à-dire l'argent réellement disponible aujourd'hui, et <b>le niveau du fond</b>, c'est-à-dire le capital constitué par les adhérents.</p>
+    <p>Sous le fond, les trois lignes d'engagement reprennent exactement vos notes : ce qui est sorti en crédit, ce que l'association doit à la banque, et ce que les membres doivent encore reconstituer.</p>
+    <p>La ligne des reconstitutions non réalisées est votre indicateur de risque. Elle apparaît dès l'accueil parce qu'elle figure dans votre bilan.</p>
+  </div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>10:02</span><span>4G</span></div>
+    <div class="entete">
+      <div class="retour">Membres</div>
+      <div class="titre-ecran">Nouvelle adhésion</div>
+    </div>
+    <div class="corps">
+      <div class="bandeau"><b>Étape 1 sur 2 — Enregistrement</b>L'adhérent est enregistré. Il ne devient actif qu'après paiement de son fond.</div>
+      <div class="champ">Nom et prénom <b>Rosine Mengue</b></div>
+      <div class="champ">Téléphone <b>077 44 xx xx</b></div>
+      <div class="champ">Date d'entrée <b>12 octobre</b></div>
+      <div class="champ">Présenté par <b>Paul Mba</b></div>
+      <div class="recu">
+        <div class="l"><span>Fond à verser</span><span>5 000 000</span></div>
+        <div class="l"><span>Déjà versé</span><span>2 000 000</span></div>
+        <div class="l tot"><span>Reste à verser</span><span>3 000 000</span></div>
+      </div>
+      <div class="bandeau att"><b>Statut : adhérent en cours d'admission</b>Ne participe pas encore aux tontines et ne peut pas demander de crédit.</div>
+      <a class="btn fort">Enregistrer un versement</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref neuf">Nouveau — l'entrée</span>
+    <h3>Deux actes, pas un seul</h3>
+    <p>Vos notes distinguent clairement l'enregistrement de l'adhérent et le paiement du fond. L'écran respecte cette séparation, ce qui règle un cas très concret : celui de la personne enregistrée qui n'a pas encore fini de payer.</p>
+    <p>Tant que le fond n'est pas complet, elle a un statut à part — visible de tous, sans ambiguïté — et ne peut ni participer aux tontines ni emprunter.</p>
+  </div>
+</div>
+
+<div class="question">
+  <div class="num">Question 1</div>
+  <h3>Le fond de 5 000 000, c'est quoi exactement ?</h3>
+  <p>Nous avons besoin de savoir si ce montant est ce que <b>chaque adhérent</b> verse pour entrer, ou le <b>niveau cible du fond</b> de l'association tout entière. Les deux écrans ne se ressemblent pas du tout.</p>
+  <div class="comparatif">
+    <div class="variante">
+      <div class="cap">Si c'est un apport par adhérent</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Le fond</div></div>
+        <div class="corps">
+          <div class="bloc"><div class="bloc-titre">Niveau du fond</div><div class="bloc-chiffre">60 000 000</div><div class="bloc-detail">12 adhérents × 5 000 000</div></div>
+          <div class="ligne"><div class="nom">Rosine Mengue<small>2 000 000 sur 5 000 000</small></div><span class="puce att">Partiel</span></div>
+          <div class="ligne"><div class="nom">Paul Mba</div><span class="puce ok">Complet</span></div>
+          <div class="ligne"><div class="nom">Marie Nkoulou</div><span class="puce ok">Complet</span></div>
+        </div>
+      </div>
+      <p class="consequence">Chaque adhérent a un compte de fond individuel, suivi et restituable. Le fond total est une somme d'apports nominatifs. C'est ce que nous avons dessiné par défaut dans le reste du document.</p>
+    </div>
+    <div class="variante">
+      <div class="cap">Si c'est un objectif collectif</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Le fond</div></div>
+        <div class="corps">
+          <div class="bloc"><div class="bloc-titre">Niveau atteint</div><div class="bloc-chiffre">3 200 000</div><div class="bloc-detail">64 % de l'objectif de 5 000 000</div></div>
+          <div class="bandeau">Reste 1 800 000 à constituer avant le démarrage des crédits</div>
+          <div class="ligne"><div class="nom">Apports du mois</div><span class="val">450 000</span></div>
+          <div class="ligne"><div class="nom">Intérêts capitalisés</div><span class="val">120 000</span></div>
+        </div>
+      </div>
+      <p class="consequence">Il n'y a pas de compte individuel : le fond est une caisse commune avec une jauge de progression. Le calcul de fin d'année n'a alors plus rien à voir, puisqu'il n'y a rien de nominatif à restituer.</p>
+    </div>
+  </div>
+  <div class="reponse"><b>Deuxième partie de la question</b>Quand un adhérent quitte l'association, son fond lui est-il rendu ? En totalité, après un délai, ou pas du tout ?</div>
+</div>
+
+<!-- ═══════════════ TONTINES ═══════════════ -->
+<h2 class="chapitre" id="tontines">2. Les tontines<span>Plusieurs tontines en parallèle à l'intérieur de la même association</span></h2>
+
+<div class="question">
+  <div class="num">Question 2</div>
+  <h3>Tontine 1, 2 et 3 : tout le monde participe aux trois ?</h3>
+  <p>Vos notes listent trois tontines sans préciser si l'adhésion à l'association vaut participation aux trois, ou si chacun choisit. Cela décide de la présence ou non d'un écran d'inscription par tontine, et surtout de la façon dont on calcule ce qu'un membre doit apporter à une séance.</p>
+  <div class="comparatif">
+    <div class="variante">
+      <div class="cap">Si tout le monde participe à tout</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Ma séance du 12</div></div>
+        <div class="corps">
+          <div class="recu">
+            <div class="l"><span>Tontine 1</span><span>25 000</span></div>
+            <div class="l"><span>Tontine 2</span><span>50 000</span></div>
+            <div class="l"><span>Tontine 3</span><span>15 000</span></div>
+            <div class="l tot"><span>À apporter</span><span>90 000</span></div>
+          </div>
+          <p style="font-size:.72rem;color:#7E838A;margin-top:9px">Une seule remise, une seule séance, trois tours en parallèle.</p>
+          <a class="btn fort">Payer 90 000</a>
+        </div>
+      </div>
+      <p class="consequence">Plus simple : une séance unique, un encaissement unique par personne. Le trésorier ne saisit qu'une fois. Trois tirages se déroulent dans la même réunion.</p>
+    </div>
+    <div class="variante">
+      <div class="cap">Si chacun choisit ses tontines</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Mes tontines</div></div>
+        <div class="corps">
+          <div class="ligne"><div class="nom">Tontine 1<small>25 000 par séance</small></div><span class="puce ok">Inscrit</span></div>
+          <div class="ligne"><div class="nom">Tontine 2<small>50 000 par séance</small></div><span class="puce ok">Inscrit</span></div>
+          <div class="ligne"><div class="nom">Tontine 3<small>15 000 par séance</small></div><span class="puce">Rejoindre</span></div>
+          <div class="bandeau att" style="margin-top:11px"><b>Inscription jusqu'au 30 octobre</b>Après le démarrage du tour, plus d'entrée possible.</div>
+        </div>
+      </div>
+      <p class="consequence">Il faut un écran d'inscription par tontine, une date limite d'entrée, et une liste de participants distincte de la liste des adhérents. Le tirage ne porte que sur les inscrits de cette tontine-là.</p>
+    </div>
+  </div>
+  <div class="reponse"><b>À préciser aussi</b>Les trois tontines ont-elles la même périodicité et la même séance, ou des rythmes différents ?</div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>15:21</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Séance du 12 oct.</span><em>trésorier</em></div>
+      <div class="titre-ecran">Encaissement</div>
+    </div>
+    <div class="compteur"><span class="lib">Caisse de la séance</span><span class="som">318 000</span></div>
+    <div class="corps">
+      <div class="ligne"><div class="jeton"></div><div class="nom">Marie Nkoulou<small>90 000 · les 3 tontines</small></div><span class="puce ok">Encaissé</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Paul Mba<small>75 000 · tontines 1 et 2</small></div><span class="puce ok">Encaissé</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Alice Obame<small>30 000 versés sur 78 000</small></div><span class="puce att">Partiel</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Sylvie Boussougou<small>Airtel Money — reçu 14 h 40</small></div><span class="puce ok">À distance</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Georges Nguetsop<small>90 000 attendus</small></div><span class="puce">À encaisser</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Rosine Mengue<small>Fond incomplet</small></div><span class="puce">Ne cotise pas</span></div>
+      <a class="btn">Terminer l'encaissement</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref">Conservé — revu pour les tontines multiples</span>
+    <h3>Une remise, plusieurs tontines</h3>
+    <p>Le membre donne une somme, l'application la ventile entre les tontines auxquelles il participe, ses éventuelles amendes et son échéance de crédit. C'est le travail que le trésorier fait de tête aujourd'hui.</p>
+    <p>Le bandeau noir est le point le plus important de la planche : <b>le total encaissé doit correspondre à l'argent posé sur la table, à tout moment</b>. C'est ce chiffre qui rendra l'outil crédible auprès du commissaire aux comptes dès la première séance.</p>
+    <p>Rosine apparaît mais ne cotise pas : son fond n'est pas complet. La règle est visible, personne n'a à la rappeler.</p>
+  </div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>15:31</span><span>hors ligne</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Séance du 12 oct.</span><em>trésorier</em></div>
+      <div class="titre-ecran">Encaissement</div>
+    </div>
+    <div class="compteur"><span class="lib">Caisse de la séance</span><span class="som">462 000</span></div>
+    <div class="corps">
+      <div class="bandeau att"><b>Hors ligne — 4 versements en attente d'envoi</b>Continuez à encaisser. Tout part dès que le réseau revient.</div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Georges Nguetsop<small>90 000</small></div><span class="puce att">En attente</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Clarisse Ekomi<small>75 000</small></div><span class="puce att">En attente</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Bernard Assélé<small>90 000</small></div><span class="puce att">En attente</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Hervé Bikoro<small>40 000</small></div><span class="puce att">En attente</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Jean Tchoumi<small>75 000 attendus</small></div><span class="puce">À encaisser</span></div>
+      <a class="btn">Terminer l'encaissement</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref">Conservé</span>
+    <h3>Le réseau tombe, la séance continue</h3>
+    <p>L'application exige une connexion partout, <b>sauf pendant l'encaissement</b>. Si le trésorier se retrouvait bloqué devant vingt personnes, il ressortirait le carnet et l'outil serait abandonné le jour même.</p>
+    <p>Les montants attendus sont téléchargés à l'ouverture de la séance, les saisies s'empilent sur le téléphone et partent à la reconnexion. La séance ne peut pas être clôturée tant que tout n'est pas envoyé. Rien ne se perd en silence.</p>
+  </div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>16:02</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Tontine 2</span><em>président</em></div>
+      <div class="titre-ecran">Tirage du bénéficiaire</div>
+    </div>
+    <div class="corps">
+      <div class="bandeau"><b>6 participants éligibles sur 9</b>Montant du tour : 450 000</div>
+      <table class="mini-t">
+        <tr><th>Participant</th><th>Parts</th><th>Situation</th><th>Chances</th></tr>
+        <tr><td>Marie Nkoulou</td><td>2</td><td>À jour</td><td>2/11</td></tr>
+        <tr><td>Paul Mba</td><td>1</td><td>À jour</td><td>1/11</td></tr>
+        <tr><td>G. Nguetsop</td><td>3</td><td>À jour</td><td>3/11</td></tr>
+        <tr><td>C. Ekomi</td><td>2</td><td>À jour</td><td>2/11</td></tr>
+        <tr><td>R. Mengue</td><td>1</td><td>À jour</td><td>1/11</td></tr>
+        <tr><td>H. Bikoro</td><td>2</td><td>À jour</td><td>2/11</td></tr>
+        <tr class="hors"><td>Alice Obame</td><td>1</td><td>Doit 48 000</td><td>exclue</td></tr>
+        <tr class="hors"><td>Jean Tchoumi</td><td>2</td><td>Déjà servi</td><td>exclu</td></tr>
+      </table>
+      <div class="champ" style="margin-top:12px">Nombre annoncé par l'assemblée <b>47</b></div>
+      <a class="btn fort">Lancer le tirage</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref">Conservé</span>
+    <h3>Un tirage machine doit être vérifiable</h3>
+    <p>Personne ne fait confiance à un téléphone qui désigne celui qui touche 450 000. Trois garde-fous répondent à cette méfiance :</p>
+    <ul>
+      <li>Le tableau des chances s'affiche <b>avant</b> le tirage. Chacun voit sa pondération, et voit qui est exclu avec le motif.</li>
+      <li>Un membre de l'assemblée annonce un nombre à voix haute, saisi devant tout le monde. Le président ne peut donc pas décider du résultat.</li>
+      <li>Le tirage est archivé avec ce nombre et rejouable par n'importe qui, des mois plus tard.</li>
+    </ul>
+    <p>Le tirage est calculé sur le serveur, jamais sur le téléphone : si le réseau coupe, réessayer redonne le même résultat, jamais un second bénéficiaire.</p>
+  </div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>16:40</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Séance du 12 oct.</span><em>trésorier</em></div>
+      <div class="titre-ecran">Clôturer la séance</div>
+    </div>
+    <div class="corps">
+      <div class="recu">
+        <div class="l"><span>Cotisations des 3 tontines</span><span>+ 985 000</span></div>
+        <div class="l"><span>Remboursements de crédits</span><span>+ 178 000</span></div>
+        <div class="l"><span>Reconstitution de J. Tchoumi</span><span>+ 300 000</span></div>
+        <div class="l"><span>Tours remis aux bénéficiaires</span><span>− 750 000</span></div>
+        <div class="l"><span>Crédit accordé à C. Ekomi</span><span>− 200 000</span></div>
+        <div class="l tot"><span>Total saisi dans l'application</span><span>513 000</span></div>
+      </div>
+      <div class="champ">Total compté sur la table <b>508 000</b></div>
+      <div class="bandeau ko"><b>Écart de 5 000</b>Indiquez le motif. L'écart sera inscrit au procès-verbal et validé par le président.</div>
+      <div class="champ">Motif <b>Billet manquant, à recompter</b></div>
+      <a class="btn fort">Proposer la clôture au président</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref">Conservé</span>
+    <h3>L'écran qui donne sa crédibilité à l'outil</h3>
+    <p>L'application ne se contente pas d'additionner ce qu'on lui a saisi. Elle demande de compter l'argent réel et de comparer.</p>
+    <p>En cas d'écart, elle ne bloque pas — bloquer en pleine assemblée serait pire — mais elle exige un motif et une validation du président, et l'écart apparaît noir sur blanc au procès-verbal. Il n'est jamais absorbé en silence.</p>
+    <p>Ensuite, double validation : le trésorier propose, le président valide, la séance passe en lecture seule. Une erreur découverte plus tard ne s'efface pas, elle se corrige par une écriture inverse, signée et datée.</p>
+  </div>
+</div>
+
+<div class="question">
+  <div class="num">Question 6</div>
+  <h3>Y a-t-il des amendes chez vous ?</h3>
+  <p>Vos notes n'en mentionnent aucune, alors que la plupart des réunions en pratiquent. Nous ne voulons pas vous imposer une mécanique de discipline que vous n'avez pas.</p>
+  <div class="comparatif">
+    <div class="variante">
+      <div class="cap">Si vous avez des amendes</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Appel</div></div>
+        <div class="corps">
+          <div class="ligne"><div class="nom">Alice Obame<small>Amende retard 1 000</small></div><span class="puce att">En retard</span></div>
+          <div class="ligne"><div class="nom">Jean Tchoumi<small>Amende absence 2 500</small></div><span class="puce ko">Absent</span></div>
+          <div class="ligne"><div class="nom">Paul Mba</div><span class="puce ok">Présent</span></div>
+          <a class="btn fort">Valider l'appel</a>
+        </div>
+      </div>
+      <p class="consequence">L'appel devient un écran à part entière : l'amende se calcule au barème et s'ajoute automatiquement à ce que le membre doit. Il faut alors nous donner votre barème exact.</p>
+    </div>
+    <div class="variante">
+      <div class="cap">Si vous n'en avez pas</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Présences</div></div>
+        <div class="corps">
+          <div class="ligne"><div class="nom">Alice Obame</div><span class="puce ok">Présente</span></div>
+          <div class="ligne"><div class="nom">Jean Tchoumi<small>Excusé — voyage</small></div><span class="puce">Absent</span></div>
+          <div class="ligne"><div class="nom">Paul Mba</div><span class="puce ok">Présent</span></div>
+          <p style="font-size:.72rem;color:#7E838A;margin-top:9px">Les présences servent au procès-verbal uniquement.</p>
+        </div>
+      </div>
+      <p class="consequence">Les présences sont enregistrées pour le procès-verbal mais n'ont aucun effet sur l'argent. Un écran de moins, un paramètre de moins, un sujet de dispute de moins.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ CRÉDIT ═══════════════ -->
+<h2 class="chapitre" id="credit">3. Le crédit<span>Ce que l'association prête à ses membres, et ce qu'elle emprunte elle-même</span></h2>
+
+<div class="planche debut">
+  <div class="ecran">
+    <div class="statut"><span>11:15</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Amis de Nzeng-Ayong</span><em>bureau</em></div>
+      <div class="titre-ecran">Demande de crédit</div>
+    </div>
+    <div class="corps">
+      <div class="bloc plein">
+        <div class="bloc-titre">Clarisse Ekomi — 2 000 000</div>
+        <div class="bloc-detail">Motif : stock pour la boutique · déposée le 8 oct.</div>
+      </div>
+      <div class="ligne"><div class="nom">Fond versé<small>5 000 000 · complet</small></div><span class="puce ok">OK</span></div>
+      <div class="ligne"><div class="nom">Encours actuel<small>0 crédit en cours</small></div><span class="puce ok">OK</span></div>
+      <div class="ligne"><div class="nom">Reconstitution en cours<small>Aucune</small></div><span class="puce ok">OK</span></div>
+      <div class="ligne"><div class="nom">Historique de retards<small>1 retard sur 12 échéances</small></div><span class="puce att">À noter</span></div>
+      <div class="ligne"><div class="nom">Solde de caisse<small>18 450 000 disponibles</small></div><span class="puce ok">OK</span></div>
+      <div class="recu">
+        <div class="l"><span>Date de prêt</span><span>12 oct.</span></div>
+        <div class="l"><span>Taux d'intérêt</span><span>5 % par mois</span></div>
+        <div class="l"><span>Date de remboursement</span><span>12 avr.</span></div>
+        <div class="l tot"><span>Total à rembourser</span><span>2 600 000</span></div>
+      </div>
+      <div class="duo"><a class="btn fort">Accorder</a><a class="btn">Refuser</a></div>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref">Revu — vocabulaire de vos notes</span>
+    <h3>Date de prêt, taux, date de remboursement, état</h3>
+    <p>Nous avons repris exactement les quatre informations de votre note. L'état d'un crédit — en cours, échu, remboursé, en retard, en perte — devient le pivot de tout le suivi.</p>
+    <p>Le bloc de vérification affiche d'un coup ce que le bureau évalue aujourd'hui de mémoire. Deux conditions nouvelles s'y ajoutent par rapport à la première version : le fond doit être complet, et une reconstitution en cours bloque tout nouveau crédit.</p>
+  </div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>11:22</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Amis de Nzeng-Ayong</span><em>bureau</em></div>
+      <div class="titre-ecran">Emprunt bancaire</div>
+    </div>
+    <div class="corps">
+      <div class="bloc">
+        <div class="bloc-titre">BGFI Bank — contrat 2026-04</div>
+        <div class="bloc-chiffre">5 000 000</div>
+        <div class="bloc-detail">Emprunté le 4 mars · à rembourser le 4 mars</div>
+      </div>
+      <div class="recu">
+        <div class="l"><span>Capital restant dû</span><span>3 200 000</span></div>
+        <div class="l"><span>Intérêts déjà payés</span><span>340 000</span></div>
+        <div class="l"><span>Prochaine échéance</span><span>4 nov.</span></div>
+        <div class="l tot"><span>Mensualité</span><span>460 000</span></div>
+      </div>
+      <div class="bandeau att"><b>Ce montant n'est pas au fond</b>Il est emprunté et devra être rendu. Le solde de caisse l'inclut, le niveau du fond non.</div>
+      <div class="ligne"><div class="nom">État<small>Remboursement en cours</small></div><span class="puce ok">À jour</span></div>
+      <a class="btn discret">Enregistrer une échéance payée</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref neuf">Nouveau — absent de la première version</span>
+    <h3>L'association aussi est débitrice</h3>
+    <p>Nous n'avions modélisé que les prêts <b>aux</b> membres. Votre note ajoute un emprunt de l'association <b>à</b> la banque, avec la même structure : date de prêt, date de remboursement, état.</p>
+    <p>C'est important pour une raison de lecture : sans cet écran, le solde de caisse gonflé par un emprunt donnerait l'illusion d'une association plus riche qu'elle ne l'est. Le bandeau le dit explicitement.</p>
+  </div>
+</div>
+
+<div class="question">
+  <div class="num">Question 4</div>
+  <h3>Que fait-on des intérêts payés à la banque ?</h3>
+  <p>Quand l'association emprunte à la banque pour pouvoir prêter à ses membres, elle paie des intérêts. La question est de savoir qui les supporte, et l'écran de résultat n'est pas le même selon la réponse.</p>
+  <div class="comparatif">
+    <div class="variante">
+      <div class="cap">Si l'association les supporte</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Résultat du mois</div></div>
+        <div class="corps">
+          <div class="recu">
+            <div class="l"><span>Intérêts reçus des membres</span><span>+ 620 000</span></div>
+            <div class="l"><span>Intérêts payés à la banque</span><span>− 210 000</span></div>
+            <div class="l tot"><span>Bénéfice net</span><span>410 000</span></div>
+          </div>
+          <p style="font-size:.72rem;color:#7E838A;margin-top:9px">Le coût est mutualisé, il réduit le bénéfice de tous.</p>
+        </div>
+      </div>
+      <p class="consequence">Le bilan affiche un bénéfice net, après coût de l'emprunt. C'est plus juste économiquement, et plus simple à expliquer en assemblée.</p>
+    </div>
+    <div class="variante">
+      <div class="cap">Si l'emprunteur les supporte</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Crédit de C. Ekomi</div></div>
+        <div class="corps">
+          <div class="recu">
+            <div class="l"><span>Capital</span><span>2 000 000</span></div>
+            <div class="l"><span>Intérêt association 5 %</span><span>600 000</span></div>
+            <div class="l"><span>Refacturation banque</span><span>84 000</span></div>
+            <div class="l tot"><span>À rembourser</span><span>2 684 000</span></div>
+          </div>
+          <p style="font-size:.72rem;color:#7E838A;margin-top:9px">Chaque crédit porte un coût différent selon sa source.</p>
+        </div>
+      </div>
+      <p class="consequence">Il faut alors savoir, pour chaque crédit accordé, s'il vient du fond ou de l'argent emprunté — et le membre paie deux taux distincts. Plus fidèle au coût réel, nettement plus lourd à tenir.</p>
+    </div>
+  </div>
+  <div class="reponse"><b>À préciser aussi</b>Dans quel cas recourez-vous à la banque, et qu'est-ce qui sert de garantie ?</div>
+</div>
+
+<!-- ═══════════════ RECONSTITUTION ═══════════════ -->
+<h2 class="chapitre" id="reconst">4. La reconstitution<span>Le concept qui manquait entièrement à la première version</span></h2>
+
+<div class="encadre">
+  <p>C'est ce que nous avions le plus mal compris. Nous avions imaginé une caisse de secours : de l'argent donné à un membre frappé par un événement, sans retour. Vos notes décrivent autre chose — un <b>événement</b>, un <b>délai de reconstitution</b>, un <b>état</b>. Le membre puise dans le fond, et il a l'obligation de le remettre à niveau dans un délai convenu.</p>
+  <p>Ce n'est ni un don ni tout à fait un crédit. C'est un objet à part, avec ses propres écrans, et c'est probablement le sujet le plus sensible de l'application : il touche des gens qui viennent de perdre un proche ou de tomber malade.</p>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>09:40</span><span>4G</span></div>
+    <div class="entete">
+      <div class="retour">Reconstitutions</div>
+      <div class="titre-ecran">Déclarer un événement</div>
+    </div>
+    <div class="corps">
+      <div class="champ">Adhérent concerné <b>Jean Tchoumi</b></div>
+      <div class="champ">Nature de l'événement <b>Décès d'un parent</b></div>
+      <div class="champ">Date de l'événement <b>28 septembre</b></div>
+      <div class="champ">Montant prélevé sur le fond <b>1 200 000</b></div>
+      <div class="champ">Délai de reconstitution <b>6 mois — au 28 mars</b></div>
+      <div class="bandeau"><b>Effet sur le fond</b>Le niveau du fond passe de 60 000 000 à 58 800 000 jusqu'à reconstitution complète.</div>
+      <a class="btn fort">Enregistrer et décaisser</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref neuf">Nouveau</span>
+    <h3>L'événement, le montant, le délai</h3>
+    <p>Trois informations suffisent à ouvrir un dossier, et la quatrième — l'état — se met à jour toute seule ensuite.</p>
+    <p>L'écran affiche immédiatement l'effet sur le niveau du fond. C'est ce qui manque le plus dans un carnet : on voit sortir l'argent, on ne voit pas le fond baisser.</p>
+    <p>Le ton compte ici. Pas de vocabulaire de dette ni de relance agressive : la personne vient de perdre un parent.</p>
+  </div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>09:44</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Amis de Nzeng-Ayong</span><em>bureau</em></div>
+      <div class="titre-ecran">Reconstitutions</div>
+    </div>
+    <div class="corps">
+      <div class="bloc">
+        <div class="bloc-titre">Non réalisées à ce jour</div>
+        <div class="bloc-chiffre">2 400 000</div>
+        <div class="bloc-detail">3 dossiers · dont 1 hors délai</div>
+      </div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Jean Tchoumi<small>Décès · 900 000 sur 1 200 000</small></div><span class="puce att">5 mois</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Alice Obame<small>Maladie · 300 000 sur 800 000</small></div><span class="puce att">2 mois</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Bernard Assélé<small>Sinistre · 0 sur 1 400 000</small></div><span class="puce ko">Hors délai</span></div>
+      <div class="ligne"><div class="jeton"></div><div class="nom">Marie Nkoulou<small>Naissance · 400 000</small></div><span class="puce ok">Reconstitué</span></div>
+      <div class="bandeau ko"><b>Bernard Assélé — délai dépassé de 41 jours</b>Le bureau doit décider : prolonger, appliquer une pénalité, ou passer en perte.</div>
+      <a class="btn">Ouvrir le dossier</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref neuf">Nouveau — votre indicateur de risque</span>
+    <h3>« Total des reconstitutions non réalisées »</h3>
+    <p>Cette ligne figure noir sur blanc dans votre bilan. Elle mérite son propre écran, parce qu'elle mesure ce qui est sorti du fond et n'est pas encore revenu.</p>
+    <p>Chaque dossier a un état visible et un compte à rebours. Quand le délai est dépassé, l'application ne décide pas à la place du bureau : elle signale et propose les trois issues possibles.</p>
+  </div>
+</div>
+
+<div class="question">
+  <div class="num">Question 3</div>
+  <h3>Que se passe-t-il quand le délai de reconstitution est dépassé ?</h3>
+  <p>C'est la question la plus délicate du projet, parce qu'elle touche des gens en difficulté. Nous avons besoin de votre règle, pas de notre supposition.</p>
+  <div class="comparatif">
+    <div class="variante">
+      <div class="cap">Si le bureau décide au cas par cas</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Dossier hors délai</div></div>
+        <div class="corps">
+          <div class="bandeau att"><b>Bernard Assélé — 1 400 000</b>Délai dépassé de 41 jours</div>
+          <a class="btn">Prolonger le délai</a>
+          <a class="btn">Appliquer une pénalité</a>
+          <a class="btn">Passer en perte</a>
+          <div class="champ" style="margin-top:9px">Motif de la décision</div>
+        </div>
+      </div>
+      <p class="consequence">L'application signale et attend. Elle enregistre la décision et son motif, sans jamais agir seule. Plus humain, et plus proche de votre pratique actuelle.</p>
+    </div>
+    <div class="variante">
+      <div class="cap">Si une règle s'applique automatiquement</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Dossier hors délai</div></div>
+        <div class="corps">
+          <div class="bandeau ko"><b>Pénalité appliquée</b>2 % par mois de retard, au règlement</div>
+          <div class="recu">
+            <div class="l"><span>Reste à reconstituer</span><span>1 400 000</span></div>
+            <div class="l"><span>Pénalité 41 jours</span><span>38 000</span></div>
+            <div class="l tot"><span>Total dû</span><span>1 438 000</span></div>
+          </div>
+          <p style="font-size:.72rem;color:#7E838A;margin-top:9px">Appliqué sans intervention du bureau.</p>
+        </div>
+      </div>
+      <p class="consequence">Traitement identique pour tous, aucune discussion possible en assemblée. Mais aucune souplesse pour quelqu'un dont la situation ne s'est pas améliorée.</p>
+    </div>
+  </div>
+  <div class="reponse"><b>Deux points à préciser</b>La reconstitution porte-t-elle un intérêt, ou seulement le montant prélevé ? Et un membre peut-il avoir une reconstitution en cours et un crédit en même temps ?</div>
+</div>
+
+<!-- ═══════════════ BILAN ═══════════════ -->
+<h2 class="chapitre" id="bilan">5. La caisse et le bilan<span>Situation de caisse au quotidien, bilan mensuel et annuel</span></h2>
+
+<div class="planche debut">
+  <div class="ecran">
+    <div class="statut"><span>08:47</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Amis de Nzeng-Ayong</span><em>adhérent</em></div>
+      <div class="titre-ecran">Mon compte</div>
+    </div>
+    <div class="corps">
+      <div class="bloc plein">
+        <div class="bloc-titre">Mon fond</div>
+        <div class="bloc-chiffre">5 000 000</div>
+        <div class="bloc-detail">Versé intégralement le 4 mars 2025</div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-titre">Mes tontines</div>
+        <div class="ligne" style="padding:7px 0"><div class="nom">Tontine 1<small>Servie en juin</small></div><span class="puce ok">Fait</span></div>
+        <div class="ligne" style="padding:7px 0;border:none"><div class="nom">Tontine 2<small>Pas encore servie · 2 parts</small></div><span class="puce">En attente</span></div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-titre">Mon crédit</div>
+        <div class="bloc-chiffre">1 300 000</div>
+        <div class="bloc-detail">Restant dû · échéance du 12 nov.</div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-titre">Ma reconstitution</div>
+        <div class="bloc-chiffre">300 000</div>
+        <div class="bloc-detail">Reste à reconstituer avant le 28 mars</div>
+      </div>
+      <a class="btn fort">Payer 90 000 pour la séance du 12</a>
+    </div>
+    <div class="nav"><div>Accueil</div><div>Tontines</div><div>Crédit</div><div>Membres</div><div class="actif">Mon compte</div></div>
+  </div>
+  <div class="marge">
+    <span class="ref">Revu — quatre engagements distincts</span>
+    <h3>Vérifier sans avoir à demander au trésorier</h3>
+    <p>Aujourd'hui, un adhérent qui veut savoir où il en est doit appeler le trésorier ou attendre la séance. C'est la principale source de tension dans les réunions.</p>
+    <p>Quatre choses différentes cohabitent désormais sur son compte, et il ne faut surtout pas les mélanger : son fond, qui est du capital ; ses tontines, qui sont des tours ; son crédit, qu'il rembourse avec intérêt ; sa reconstitution, qu'il remet à niveau sans forcément d'intérêt.</p>
+  </div>
+</div>
+
+<div class="planche">
+  <div class="ecran">
+    <div class="statut"><span>17:20</span><span>4G</span></div>
+    <div class="entete">
+      <div class="contexte"><span>Amis de Nzeng-Ayong</span><em>bureau</em></div>
+      <div class="titre-ecran">Bilan — octobre</div>
+    </div>
+    <div class="corps">
+      <div class="bloc plein">
+        <div class="bloc-titre">Niveau du fond</div>
+        <div class="bloc-chiffre">58 800 000</div>
+        <div class="bloc-detail">Objectif 60 000 000 · écart dû aux reconstitutions</div>
+      </div>
+      <div class="recu">
+        <div class="l"><span>Entrées du mois</span><span>+ 4 180 000</span></div>
+        <div class="l"><span>Sorties du mois</span><span>− 3 660 000</span></div>
+        <div class="l tot"><span>Solde de la caisse</span><span>18 450 000</span></div>
+      </div>
+      <div class="bloc" style="margin-top:11px">
+        <div class="bloc-titre">Total des intérêts — bénéfice de l'association</div>
+        <div class="bloc-chiffre">620 000</div>
+        <div class="bloc-detail">Cumul depuis janvier : 4 850 000</div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-titre">Reconstitutions non réalisées</div>
+        <div class="bloc-chiffre">2 400 000</div>
+        <div class="bloc-detail">3 dossiers · 1 hors délai</div>
+      </div>
+      <div class="bloc">
+        <div class="bloc-titre">Pertes de l'année</div>
+        <div class="bloc-chiffre">0</div>
+        <div class="bloc-detail">Aucune créance passée en perte</div>
+      </div>
+      <a class="btn discret">Exporter en PDF</a>
+    </div>
+  </div>
+  <div class="marge">
+    <span class="ref neuf">Nouveau — repris mot pour mot de vos notes</span>
+    <h3>Les quatre chiffres que vous suivez déjà</h3>
+    <p>Niveau du fond, total des intérêts présenté comme le bénéfice de l'association, total des reconstitutions non réalisées, total des pertes de l'année. Nous n'avons rien ajouté et rien retiré.</p>
+    <p>Au-dessus, la situation de caisse en trois lignes — entrée, sortie, solde — comme dans votre marge de droite.</p>
+    <p>Le même écran sert au bilan mensuel et au bilan annuel : seule la période change. Cela évite d'avoir deux documents qui finissent par ne plus dire la même chose.</p>
+  </div>
+</div>
+
+<div class="question">
+  <div class="num">Question 5</div>
+  <h3>En fin d'année, on partage quoi ?</h3>
+  <p>C'est la question qui a le plus d'impact sur l'application. Notre première version supposait que tout était redistribué en décembre. Vos notes suggèrent plutôt un fond permanent dont seul le bénéfice serait éventuellement partagé, mais nous préférons vous le demander.</p>
+  <div class="comparatif">
+    <div class="variante">
+      <div class="cap">Si le fond reste en place</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Clôture 2026</div></div>
+        <div class="corps">
+          <div class="bloc"><div class="bloc-titre">Fond reporté sur 2027</div><div class="bloc-chiffre">58 800 000</div></div>
+          <div class="recu">
+            <div class="l"><span>Bénéfice de l'année</span><span>4 850 000</span></div>
+            <div class="l"><span>Mis en réserve</span><span>1 850 000</span></div>
+            <div class="l tot"><span>Distribué</span><span>3 000 000</span></div>
+          </div>
+          <p style="font-size:.72rem;color:#7E838A;margin-top:9px">250 000 par adhérent</p>
+        </div>
+      </div>
+      <p class="consequence">L'association est une structure durable. La clôture est un arrêté de comptes, pas une liquidation. Le fond de chacun reste immobilisé tant qu'il est adhérent, et seul le bénéfice se partage.</p>
+    </div>
+    <div class="variante">
+      <div class="cap">Si tout est redistribué</div>
+      <div class="ecran mini">
+        <div class="entete"><div class="titre-ecran">Partage 2026</div></div>
+        <div class="corps">
+          <div class="bandeau ok"><b>Tout est reversé</b>L'association se reconstitue en janvier</div>
+          <table class="mini-t">
+            <tr><th>Adhérent</th><th>Fond</th><th>Part</th></tr>
+            <tr><td>M. Nkoulou</td><td>5 000 000</td><td>404 000</td></tr>
+            <tr><td>P. Mba</td><td>5 000 000</td><td>404 000</td></tr>
+            <tr><td>A. Obame</td><td>4 200 000</td><td>404 000</td></tr>
+          </table>
+          <a class="btn fort">Soumettre au vote</a>
+        </div>
+      </div>
+      <p class="consequence">Chaque décembre, tout sort et tout rentre. Il faut alors un écran de liquidation complet, et la question de la réadhésion se pose chaque année. C'est ce que nous avions dessiné en première version.</p>
+    </div>
+  </div>
+  <div class="reponse"><b>À préciser aussi</b>Le bénéfice se répartit-il à parts égales entre adhérents, ou au prorata du fond versé par chacun ?</div>
+</div>
+
+<!-- ═══════════════ RÉCAP ═══════════════ -->
+<h2 class="chapitre" id="recap">Les six questions, rassemblées<span>Ce dont nous avons besoin pour continuer</span></h2>
+
+<div class="encadre">
+  <ol style="margin-left:20px;font-size:.95rem">
+    <li style="margin:10px 0"><b>Le fond de 5 000 000</b> — apport de chaque adhérent, ou objectif collectif de l'association ? Et rendu ou non au départ d'un membre ?</li>
+    <li style="margin:10px 0"><b>Tontines 1, 2 et 3</b> — tout le monde participe aux trois, ou chacun s'inscrit ? Même rythme ou rythmes différents ?</li>
+    <li style="margin:10px 0"><b>La reconstitution</b> — que se passe-t-il si le délai est dépassé ? Porte-t-elle un intérêt ? Peut-on cumuler reconstitution et crédit ?</li>
+    <li style="margin:10px 0"><b>L'emprunt bancaire</b> — dans quel cas y recourez-vous, quelle garantie, et qui supporte les intérêts ?</li>
+    <li style="margin:10px 0"><b>La fin d'année</b> — le fond reste-t-il en place, ou tout est-il redistribué ? Et le bénéfice se partage-t-il à parts égales ou au prorata ?</li>
+    <li style="margin:10px 0"><b>Les amendes</b> — en pratiquez-vous ? Si oui, quel barème ?</li>
+  </ol>
+  <p style="margin-top:14px">Trois d'entre elles conditionnent presque tout le reste : la 1, la 3 et la 5. Les autres peuvent attendre un deuxième tour de discussion.</p>
+</div>
+
+<div class="encadre">
+  <h2>Ce qui n'est pas encore dessiné</h2>
+  <p>La création de l'association et la saisie de son règlement, l'invitation des adhérents, l'échange de tours entre deux participants, et le rapprochement des paiements Mobile Money côté trésorier. Ils viendront une fois les six questions tranchées, pour éviter de dessiner des écrans qu'il faudrait refaire.</p>
+</div>
+
+</div>
+</body>
+</html>
