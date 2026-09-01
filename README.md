@@ -2,7 +2,7 @@
 
 Wireframes d'une application de gestion d'association tontinière, publiés pour relecture par l'association pilote.
 
-**À consulter ici :** https://Steve-Landry-NONO.github.io/Tontine/
+**À consulter ici :** https://steve-landry-nono.github.io/Tontine/
 
 ---
 
