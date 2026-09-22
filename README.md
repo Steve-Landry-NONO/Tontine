@@ -1,6 +1,6 @@
 # Gestion d'association et de tontines — écrans de travail
 
-Wireframes d'une application de gestion d'association tontinière, publiés pour relecture par l'association pilote.
+Wireframes d'une application de gestion d'association tontinière, publiés pour relecture par l'association pilote (Gabon).
 
 **À consulter ici :** https://steve-landry-nono.github.io/Tontine/
 
@@ -8,63 +8,53 @@ Wireframes d'une application de gestion d'association tontinière, publiés pour
 
 ## De quoi il s'agit
 
-L'application vise à remplacer le carnet du trésorier par un registre numérique partagé : une traçabilité précise des fonds, un historique consultable par tous, et des synthèses lisibles en un coup d'œil.
+L'application remplace le carnet du trésorier par un registre numérique partagé : traçabilité précise des fonds, historique consultable par tous, synthèses lisibles en un coup d'œil. Elle est pensée pour servir n'importe quelle association tontinière, pas seulement le pilote.
 
-Elle est pensée pour être utilisable par n'importe quelle association tontinière, pas seulement par le pilote.
+## Le modèle (version 3)
 
-### Ce que le modèle couvre
+```
+Association          fond de référence commun à tous les adhérents
+ └ Tontine           ex. Tontine des élites, Tontine des femmes
+    └ Taux           ex. 1 000 000 ou 500 000 par séance — un cycle, une cagnotte
+       └ Position    une « main » ; un adhérent peut en détenir plusieurs
+```
 
-- **L'association et son fond** — entrée d'un adhérent, paiement du fond, niveau du fond
-- **Les tontines** — plusieurs en parallèle, séance, encaissement, tirage du bénéficiaire, clôture
-- **Le crédit** — prêts aux membres et emprunt de l'association à la banque
-- **La reconstitution** — événement, délai, suivi des reconstitutions non réalisées
-- **La caisse et le bilan** — situation de caisse au quotidien, bilan mensuel et annuel
+- **On tire des positions, pas des personnes.** Deux positions dans le même taux, c'est deux mains.
+- **Le fond de référence** fixe le ticket d'entrée, monte chaque année avec le partage des intérêts, et un fond qui tombe sous ce niveau rend inéligible.
+- **Autour du fond** : crédit aux adhérents, emprunt bancaire, reconstitution (prolongation → pénalité → coupe du fond), amendes.
 
----
+## Décisions actées avec le pilote
 
-## Comment lire les écrans
-
-Les maquettes sont **volontairement en noir et blanc**. À ce stade, ce qui compte est ce que chaque écran doit contenir et qui a le droit de faire quoi. L'apparence viendra plus tard.
-
-- Les noms et les montants sont fictifs.
-- À droite de chaque écran, une note explique ce qu'il résout.
-- **Six blocs encadrés en jaune sont des questions posées à l'association.** Pour chacune, les deux options sont dessinées côte à côte : on choisit en regardant, pas en imaginant.
-
----
-
-## Les six questions ouvertes
-
-Le travail est suspendu à ces réponses. Les trois premières conditionnent presque tout le reste.
-
-| | Question |
+| Sujet | Décision |
 |---|---|
-| 1 | **Le fond** — apport individuel de chaque adhérent, ou objectif collectif de l'association ? Restitué au départ d'un membre ? |
-| 2 | **Les tontines** — tout le monde participe aux trois, ou chacun s'inscrit ? Rythmes identiques ou différents ? |
-| 3 | **La reconstitution** — que se passe-t-il si le délai est dépassé ? Porte-t-elle un intérêt ? Cumulable avec un crédit ? |
-| 4 | **L'emprunt bancaire** — dans quels cas, quelle garantie, et qui supporte les intérêts ? |
-| 5 | **La fin d'année** — le fond reste-t-il en place, ou tout est-il redistribué ? Bénéfice à parts égales ou au prorata ? |
-| 6 | **Les amendes** — en pratique-t-on ? Si oui, quel barème ? |
+| Fond | Chaque adhérent verse le fond de référence (5 000 000 FCFA au départ) |
+| Tontines | Chacun choisit ses tontines ; un taux unique par groupe ; on ne bouffe que dans sa tontine et son taux |
+| Positions | Plusieurs positions possibles, dans un taux ou dans plusieurs |
+| En cours de cycle | Pas de déplacement, pas d'abandon de position |
+| Délai de reconstitution dépassé | Prolongation, puis pénalité, puis coupe du fond → inéligible |
+| Intérêts bancaires | Payés par l'association (sortie de caisse), compensés par l'adhérent bénéficiaire ou débités de son fond |
+| Fin d'année | Intérêts des crédits partagés à parts égales et ajoutés au fond de chacun ; ce niveau devient le nouveau ticket d'entrée |
+| Amendes | Existent, entrent en caisse |
+| Configuration | Sanctions, taux et quasi-totalité des réglages nommés et chiffrés par chaque association |
+| Droits | Admin d'association, responsable de tontine, adhérent |
 
----
+## Les quatre questions ouvertes
 
-## Ce qui n'est pas encore dessiné
+1. **Le fond d'entrée** se paie-t-il en une fois ou en plusieurs versements ?
+2. **Le tirage** a-t-il lieu à chaque séance, ou l'ordre complet est-il tiré au début du cycle ?
+3. **L'inéligibilité** — un adhérent au fond coupé peut-il encore bouffer ses positions en cours ? Garde-t-il sa part des intérêts ?
+4. **Les amendes et pénalités** restent-elles à l'association ou s'ajoutent-elles au partage ?
 
-Création de l'association et saisie de son règlement, invitation des adhérents, échange de tours entre participants, rapprochement des paiements Mobile Money côté trésorier.
+Pour chacune, le document dessine les options côte à côte.
 
-Ces écrans dépendent trop des six réponses ci-dessus pour être dessinés maintenant.
+## Décisions techniques
 
----
-
-## Décisions techniques déjà prises
-
-- **Multi-association** — un compte unique, identifié par le numéro de téléphone, donne accès à toutes les associations d'une personne. Le rôle est attaché à l'adhésion, pas à la personne.
-- **Application connectée**, avec une exception : l'encaissement en séance continue de fonctionner hors réseau et se synchronise ensuite. Sans cela, une coupure devant l'assemblée ferait ressortir le carnet.
-- **Rien ne s'efface** — une écriture validée se corrige par une écriture inverse, motivée et datée, jamais par une suppression.
-- **Aucun mouvement d'argent validé par une seule personne** — le trésorier propose la clôture, le président valide.
-- **Le tirage est calculé côté serveur**, à partir d'un nombre annoncé publiquement en séance, et reste rejouable par n'importe quel membre.
-- **Moyens de paiement visés au démarrage** (pilote au Gabon) : Airtel Money, Mobicash, Express Union Mobile. Les espèces restent le mode par défaut.
-
----
+- **Multi-association** : un compte unique par numéro de téléphone ; le rôle est attaché à chaque adhésion.
+- **Application connectée**, sauf l'encaissement en séance, qui continue hors réseau et se synchronise ensuite.
+- **Rien ne s'efface** : une écriture validée se corrige par une écriture inverse, motivée et datée.
+- **Double validation** des mouvements d'argent : le trésorier propose, le président valide.
+- **Tirage calculé côté serveur**, à partir d'un nombre annoncé en séance, archivé et rejouable.
+- **Paiements visés au démarrage** : Airtel Money, Mobicash, Express Union Mobile. Les espèces restent le mode par défaut.
 
 ## Contenu du dépôt
 
@@ -74,26 +64,8 @@ Ces écrans dépendent trop des six réponses ci-dessus pour être dessinés mai
 | `robots.txt` | Empêche l'indexation par les moteurs de recherche. |
 | `README.md` | Ce document. |
 
----
-
-## Publier ou mettre à jour
-
-Le site est servi par GitHub Pages depuis la branche `main`, dossier racine.
-
-Pour publier une nouvelle version, remplacer `index.html` et pousser. La mise en ligne prend une à deux minutes.
-
-```
-git add index.html
-git commit -m "Wireframes v2 — modèle association et fond"
-git push
-```
+Le site est servi par GitHub Pages depuis la branche `main`, dossier racine. Remplacer `index.html` et pousser suffit à publier une nouvelle version.
 
 ---
 
-## Retours
-
-Les remarques peuvent être faites question par question, en indiquant le numéro. Une réponse même partielle sur les questions 1, 3 et 5 permet de reprendre le travail.
-
----
-
-*Version 2 — septembre 2026. Document de travail, susceptible d'évoluer à chaque échange avec l'association pilote.*
+*Version 3 — septembre 2026. Document de travail, mis à jour à chaque échange avec l'association pilote.*
