@@ -10,12 +10,12 @@ Wireframes d'une application de gestion d'association tontinière, publiés pour
 
 L'application remplace le carnet du trésorier par un registre numérique partagé : traçabilité précise des fonds, historique consultable par tous, synthèses lisibles en un coup d'œil. Elle est pensée pour servir n'importe quelle association tontinière, pas seulement le pilote.
 
-## Le modèle (version 3)
+## Le modèle (version 4)
 
 ```
-Association          fond de référence commun à tous les adhérents
- └ Tontine           ex. Tontine des élites, Tontine des femmes
-    └ Taux           ex. 1 000 000 ou 500 000 par séance — un cycle, une cagnotte
+Association          bureau · fond de référence · caisse (fond, crédits, reconstitution)
+ └ Branche           ex. Élites Bayangam, Femmes Bayangam — bureau, jours de séance, caisse
+    └ Tontine        = un taux, ex. 1 000 000 par séance — un cycle, une cagnotte, pas de bureau
        └ Position    une « main » ; un adhérent peut en détenir plusieurs
 ```
 
@@ -36,14 +36,19 @@ Association          fond de référence commun à tous les adhérents
 | Fin d'année | Intérêts des crédits partagés à parts égales et ajoutés au fond de chacun ; ce niveau devient le nouveau ticket d'entrée |
 | Amendes | Existent, entrent en caisse |
 | Configuration | Sanctions, taux et quasi-totalité des réglages nommés et chiffrés par chaque association |
-| Droits | Admin d'association, responsable de tontine, adhérent |
+| Branches | Chaque branche a son bureau, ses jours de séance et sa caisse ; une tontine relève du bureau de sa branche |
+| Tontine | Une tontine = un taux (montant de cotisation) |
+| Bureaux | Président, trésorier(s), commissaire aux comptes, secrétaire(s) ; droits propres à chaque fonction |
+| Plusieurs trésoriers | Option de configuration ; si activée, choix de donner ou non les mêmes droits |
+| Programme général | Coordonné par le secrétaire général avec les secrétaires de branche |
 
-## Les quatre questions ouvertes
+## Les cinq questions ouvertes
 
 1. **Le fond d'entrée** se paie-t-il en une fois ou en plusieurs versements ?
 2. **Le tirage** a-t-il lieu à chaque séance, ou l'ordre complet est-il tiré au début du cycle ?
-3. **L'inéligibilité** — un adhérent au fond coupé peut-il encore bouffer ses positions en cours ? Garde-t-il sa part des intérêts ?
-4. **Les amendes et pénalités** restent-elles à l'association ou s'ajoutent-elles au partage ?
+3. **Les deux caisses** — un crédit remboursé à la séance d'une branche : la branche encaisse et reverse, ou l'association encaisse elle-même ?
+4. **L'inéligibilité** — un adhérent au fond coupé peut-il encore bouffer ses positions en cours ? Garde-t-il sa part des intérêts ?
+5. **Les amendes et pénalités** restent-elles en caisse ou s'ajoutent-elles au partage ?
 
 Pour chacune, le document dessine les options côte à côte.
 
@@ -68,4 +73,4 @@ Le site est servi par GitHub Pages depuis la branche `main`, dossier racine. Rem
 
 ---
 
-*Version 3 — septembre 2026. Document de travail, mis à jour à chaque échange avec l'association pilote.*
+*Version 4 — septembre 2026. Document de travail, mis à jour à chaque échange avec l'association pilote.*
