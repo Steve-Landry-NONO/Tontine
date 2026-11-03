@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Tontine — démonstration V0</title>
+  <style>
+    :root{font:16px/1.5 system-ui,sans-serif;color:#1d1d1d;background:#f5f4f0}
+    *{box-sizing:border-box}body{margin:0}header,main,footer{max-width:1100px;margin:auto;padding:1.2rem}
+    header{border-bottom:2px solid}h1{font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.15;margin:.5rem 0}
+    h2{font-size:1.3rem;margin:0 0 .8rem}h3{font-size:1.05rem;margin:.2rem 0}
+    p{max-width:72ch}.eyebrow{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+    .banner{border-left:4px solid #805c13;background:#fff6dd;padding:.6rem 1rem;margin:1rem 0}
+    .layout{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:1rem}
+    .card{background:#fff;border:1px solid #666;border-radius:.5rem;padding:1rem;margin:1rem 0;min-width:0}
+    .line{display:flex;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid #ccc}
+    .line strong{text-align:right}label{font-weight:600;display:block;margin:.8rem 0 .3rem}
+    select,button{font:inherit;padding:.6rem;border:1px solid #333;border-radius:.3rem;background:#fff;max-width:100%}
+    select{width:100%}button{cursor:pointer}button:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid;outline-offset:2px}
+    .badge{display:inline-block;border:1px solid;border-radius:1rem;font-size:.8rem;padding:.1rem .55rem;margin:.2rem 0}
+    .muted{color:#555}ul{padding-left:1.2rem}footer{border-top:1px solid #777;font-size:.9rem}
+  </style>
+</head>
+<body>
+  <header>
+    <span class="eyebrow">Prototype de parcours · données fictives</span>
+    <h1>Une association, plusieurs mains</h1>
+    <p>Explorez le premier socle Tontine : un compte peut appartenir à plusieurs associations avec des rôles différents. Les positions restent dans leur tontine et leur cycle.</p>
+    <div class="banner"><strong>Simulation uniquement.</strong> Aucun compte, paiement, tirage ou transfert réel n'est créé. Les choix financiers ouverts seront validés avec le bureau pendant les tests.</div>
+    <a href="../index.html">Voir les maquettes V4</a>
+  </header>
+  <main>
+    <div class="layout">
+      <section class="card" aria-labelledby="scope-title">
+        <h2 id="scope-title">Mon espace</h2>
+        <label for="association">Association</label>
+        <select id="association"></select>
+        <div id="summary" aria-live="polite"></div>
+      </section>
+      <section class="card" aria-labelledby="admission-title">
+        <h2 id="admission-title">Admission en plusieurs versements</h2>
+        <p>Hypothèse à soumettre au bureau : l'échéancier garde le montant annoncé à l'entrée. L'accès attend le fond complet, et une hausse de référence peut demander un arbitrage.</p>
+        <label for="scenario">Cas à examiner</label>
+        <select id="scenario">
+          <option value="partial">Versement partiel</option>
+          <option value="complete">Fond payé sans hausse</option>
+          <option value="increase">Fond payé après une hausse</option>
+        </select>
+        <div id="admission" aria-live="polite"></div>
+      </section>
+    </div>
+    <section class="card" aria-labelledby="structure-title">
+      <h2 id="structure-title">Branches et positions</h2>
+      <div id="structure"></div>
+    </section>
+    <section class="card" aria-labelledby="next-title">
+      <h2 id="next-title">À observer pendant la séance pilote</h2>
+      <ul>
+        <li>Le changement d'association garde-t-il chaque rôle et chaque position au bon endroit ?</li>
+        <li>Le nombre de mains servies par séance correspond-il à la règle de chaque tontine ?</li>
+        <li>Que décide le bureau lorsqu'un fond payé selon l'échéancier est sous la nouvelle référence ?</li>
+      </ul>
+    </section>
+  </main>
+  <footer>V0 de démonstration. Le contrôle d'accès réel devra être fait par le serveur et la base de données.</footer>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
