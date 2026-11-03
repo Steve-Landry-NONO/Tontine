@@ -44,3 +44,26 @@ Date : 16 octobre 2026. Source : échange de cadrage dans ChatGPT. **Ces répons
 ## Statut d'implémentation
 
 Document de cadrage uniquement. Aucun paiement, tirage, partage, transfert ni départ n'est implémenté. Les réponses ci-dessus ne constituent pas des autorisations de mouvement financier. Prochaine étape : retour du bureau pilote via Steve, puis traduction des règles confirmées en critères d'acceptation et modèle de données.
+
+## Stratégie de développement et de validation en séance pilote
+
+Décision de travail du 3 novembre 2026 : avancer avec les hypothèses ci-dessus, puis les soumettre au bureau dans un parcours concret. Le statut de chaque règle doit être visible : **pratique rapportée**, **hypothèse proposée**, **validée par le bureau** ou **à arbitrer**. Une réponse en séance met à jour la règle, ses critères d'acceptation et les tests avant l'activation de l'opération concernée.
+
+### Ce que l'on peut construire maintenant
+
+1. Socle multi-association : adhérents, rôles par association/branche, tontines, cycles, positions, séances et paramètres versionnés.
+2. Accès et contrôle : permissions côté serveur, séparation entre saisie et approbation, journal de toutes les décisions et corrections par contre-écriture.
+3. Parcours de démonstration avec données fictives : admission en une fois ou échéancier, préparation du cycle, tirage et calendrier, encaissement partiel, file hors connexion, contrôle et transfert de caisse.
+4. Écrans de prévisualisation des conséquences : simulation d'un fond sous la référence, d'un partage net, d'une réserve d'amendes et d'un départ. Les opérations dont la règle est à arbitrer restent en simulation ou en attente de décision.
+5. Configuration explicite des choix propres à l'association avec date d'effet. Une règle changée après la réunion ne réécrit pas les mouvements historiques.
+
+### Séance pilote : questions posées au moment utile
+
+- Pendant l'admission : « Acceptez-vous cet échéancier ? Si la référence monte avant la fin, qui décide de l'accès et sur quelle base ? »
+- Devant le calendrier tiré : « Ce nombre de mains par séance et cet échange de dates correspondent-ils à vos pratiques ? Qui valide l'échange ? »
+- Pendant l'encaissement : « Le trésorier de branche reçoit-il aussi ce remboursement destiné à l'association ? Sous quel délai et avec quelle preuve le reverse-t-il ? »
+- Sur un cas de fond coupé : « Le membre doit recevoir à cette date : que décide le bureau, à quel moment et selon une règle connue de tous ? »
+- À la clôture annuelle : « La réserve d'amendes reste-t-elle à la branche ou à l'association ? Quelles charges bancaires sont réellement déduites du partage ? »
+- Pour un départ : « Quel montant du fond serait restitué après les engagements en cours, par qui et quand ? »
+
+Steve reste l'intermédiaire avec le bureau. Les retours de la réunion sont consignés comme décisions datées, avec les participants, puis traduits en changement de configuration ou en développement. Le parcours pilote peut commencer avec des données fictives ; toute utilisation de fonds réels attend la validation du flux concerné et de ses contrôles.
