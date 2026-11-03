@@ -4,6 +4,10 @@ Wireframes d'une application de gestion d'association tontinière, publiés pour
 
 **À consulter ici :** https://steve-landry-nono.github.io/Tontine/
 
+**Premier parcours interactif (données fictives) :** https://steve-landry-nono.github.io/Tontine/demo/
+
+Le parcours V0 montre deux associations, des rôles distincts pour un même compte, les branches, les positions et trois états d'admission. Il s'agit d'une simulation sans authentification ni transaction. Voir [l'architecture et ses limites](docs/ARCHITECTURE_V0.md). Pour vérifier le modèle : `npm run check` (Node.js 20 ou plus, aucune installation de dépendances).
+
 ---
 
 ## De quoi il s'agit
@@ -68,6 +72,10 @@ Pour chacune, le document dessine les options côte à côte.
 | `index.html` | Les wireframes. Fichier autonome, aucune dépendance externe. |
 | `robots.txt` | Empêche l'indexation par les moteurs de recherche. |
 | `README.md` | Ce document. |
+| `demo/` et `src/domain.js` | Premier parcours interactif fictif et règles de lecture. |
+| `tests/` | Vérifications de séparation des associations et de l'admission. |
+| `db/001_core.sql` | Schéma PostgreSQL préparatoire, non déployé. |
+| `docs/ARCHITECTURE_V0.md` | Frontières de confiance, hypothèses et suite. |
 
 Le site est servi par GitHub Pages depuis la branche `main`, dossier racine. Remplacer `index.html` et pousser suffit à publier une nouvelle version.
 
